@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Linear Algebra Visualizer | Download</title>
+<style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #00c8ff;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #28a745;
+        }
+        
+        html {
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%) fixed;
+            min-height: 100vh;
+            overflow: auto;
+            height: 100%;
+            overscroll-behavior: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .download-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+            animation-delay: 0.3s;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(74, 107, 255, 0.6);
+        }
+        
+        .download-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .download-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .download-btn:hover::after {
+            opacity: 1;
+        }
+        
+        .btn-text {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .feature:nth-child(1) { animation-delay: 0.5s; }
+        .feature:nth-child(2) { animation-delay: 0.7s; }
+        .feature:nth-child(3) { animation-delay: 0.9s; }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .feature p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 1s;
+        }
+        
+        .version {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .creator {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Matrix background animation */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .download-card {
+                padding: 1.5rem;
+            }
+            
+            .download-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Matrix background animation -->
+<canvas class="matrix-bg" id="matrix"></canvas>
+<div class="container">
+<header>
+<h1>Linear Algebra Visualizer</h1>
+<p class="subtitle">See the beauty of vectors, matrices, and transformations come to life</p>
+</header>
+<div class="download-card">
+<span class="version">Version 1.0</span>
+<h2>Download Now</h2>
+<p>Experience linear algebra like never before with our interactive visualizer</p>
+<!-- Change the href to point to your actual installer file -->
+<a class="download-btn" href="https://www.dropbox.com/scl/fi/1202rrszlh9jmxp8nlgva/LinearAlgebraInstaller.exe?rlkey=cs3115b81mgl5jbcmv3tskugn&st=13rlwxwq&dl=0" id="downloadBtn">
+<span class="btn-text">Download Installer</span>
+</a>
+</div><div class="download-card" style="margin-top: -2rem;"><h3>How to Use</h3><p>Install the project using the installer. When quitting the app, make sure to press <strong>Quit App</strong> on the tiny popup window to shut everything down properly.</p></div>
+<div class="download-card" style="margin: 2rem auto; max-width: 1000px;">
+  <h3>Watch Demo</h3>
+  <div style="position: relative; padding-bottom: 70%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+    <iframe
+        src="https://www.youtube.com/embed/KvEYQy-HzaM"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    ></iframe>
+  </div>
+</div>
+<div class="features">
+<div class="feature">
+<h3>3D Vector Visualization</h3>
+<p>Manipulate vectors in 3D space with intuitive controls and real-time rendering of operations like addition, dot product, and cross product.</p>
+</div>
+<div class="feature">
+<h3>Matrix Transformations</h3>
+<p>Visualize how matrices transform space with interactive examples of rotations, scaling, shearing, and other linear transformations.</p>
+</div>
+
+<div class="feature"><h3>Updated Constantly</h3><p>This project is being actively improved. More linear algebra concepts will be added over time — such as projections, eigen decomposition, and null spaces — all with dynamic visualizations.</p></div></div>
+<footer>
+<p>© 2025 Linear Algebra Visualizer | All Rights Reserved</p>
+<p class="creator">Created by Daniel Yan</p>
+</footer>
+</div>
+<script>
+        // Matrix background animation
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        
+        const alphabet = katakana + latin + nums;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+        
+        const draw = () => {
+            ctx.fillStyle = 'rgba(10, 10, 20, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0aff0a';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        
+        setInterval(draw, 30);
+        
+        // Download button animation
+        const downloadBtn = document.getElementById('downloadBtn');
+        
+        downloadBtn.addEventListener('mouseover', () => {
+            const particles = [];
+            const particleCount = 15;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * downloadBtn.offsetWidth,
+                    y: downloadBtn.offsetHeight,
+                    size: Math.random() * 3 + 1,
+                    speed: Math.random() * 2 + 1,
+                    color: `hsl(${Math.random() * 60 + 180}, 100%, 50%)`
+                });
+            }
+            
+            let animationId;
+            const duration = 1000;
+            const startTime = Date.now();
+            
+            const animateParticles = () => {
+                const progress = (Date.now() - startTime) / duration;
+                if (progress >= 1) {
+                    cancelAnimationFrame(animationId);
+                    return;
+                }
+                
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = downloadBtn.offsetWidth;
+                tempCanvas.height = downloadBtn.offsetHeight;
+                
+                particles.forEach(particle => {
+                    particle.y -= particle.speed;
+                    tempCtx.fillStyle = particle.color;
+                    tempCtx.beginPath();
+                    tempCtx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                    tempCtx.fill();
+                });
+                
+                downloadBtn.style.backgroundImage = `url(${tempCanvas.toDataURL()}), linear-gradient(45deg, var(--primary), var(--secondary))`;
+                animationId = requestAnimationFrame(animateParticles);
+            };
+            
+            animateParticles();
+        });
+        
+        downloadBtn.addEventListener('mouseout', () => {
+            downloadBtn.style.backgroundImage = 'linear-gradient(45deg, var(--primary), var(--secondary))';
+        });
+        
+        // Resize handler for matrix background
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
